@@ -13,23 +13,23 @@ using namespace sdsl;
 typedef unsigned int u_int;
 int main(int argc, char** argv)
 {  
-    try
-    {
-        if(argc <= 1){
-            cout<<"No extra command line argument passed other that program name"<<endl;
-            return 0;
-        }  
-        string file_name;
-        file_name = argv[1];
+    // try
+    // {
+    //     if(argc <= 1){
+    //         cout<<"No extra command line argument passed other that program name"<<endl;
+    //         return 0;
+    //     }  
+    //     string file_name;
+    //     file_name = argv[1];
 
-        TableIndexer ti = TableIndexer();
+    //     TableIndexer ti = TableIndexer();
 
-        ti.indexNewTable(file_name);
-        }
-    catch(const char* msg)
-    {
-        cerr<<msg<<endl;
-    }
+    //     ti.indexNewTable(file_name);
+    //     }
+    // catch(const char* msg)
+    // {
+    //     cerr<<msg<<endl;
+    // }
     
     
 

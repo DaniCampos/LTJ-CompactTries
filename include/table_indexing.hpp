@@ -9,6 +9,7 @@
 #include <map>
 #include <algorithm>
 #include "regular_trie.hpp"
+#include "index.hpp"
 
 using namespace std;
 
@@ -22,7 +23,7 @@ class TableIndexer{
     Trie* root;
     bit_vector B;
     string S;
-    vector<CompactTrieIterator> compactTries;
+    vector<Iterator *> compactTries;
     
     /*
     Parses string (line) by a single char (delimiter)
@@ -128,9 +129,10 @@ class TableIndexer{
             root = new Trie();
             createRegularTrie(index);
             toCompactForm();
-            compactTries.push_back(CompactTrieIterator(B, S));
+            compactTries.push_back(new CompactTrieIterator(B, S));
             delete root;
         }
+
     }
 
     void clearData(){
@@ -149,7 +151,7 @@ class TableIndexer{
         First line of the file indicates the dimensions of the table
         Second line of the file indicates which orders need to be indexed.
     */
-    void indexNewTable(string file_name){
+    Index indexNewTable(string file_name){
         clearData();
         if(file_name.substr(file_name.size()-4, 4) != ".txt") throw "File for indexing must have .txt extension";
         
@@ -205,6 +207,8 @@ class TableIndexer{
             }while(next_permutation(rows.begin(), rows.end()));
         }
         createIndexes();
+        Index ind(orders, compactTries, file_name);
+        return ind;
         // compactTrie.store_to_file();
     } 
 };

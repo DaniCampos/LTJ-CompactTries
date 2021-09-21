@@ -7,11 +7,12 @@
 #include <string>
 #include <sdsl/vectors.hpp>
 #include <sdsl/wavelet_trees.hpp>
+#include "iterator.hpp"
 
 using namespace std;
 using namespace sdsl;
 
-class CompactTrieIterator{
+class CompactTrieIterator: public Iterator{
     private:
         bool at_end;
         bool at_root;
