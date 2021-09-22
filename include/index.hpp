@@ -2,6 +2,7 @@
 #define INDEX_H
 
 #include <iostream>
+#include "iterator.hpp"
 
 using namespace std;
 

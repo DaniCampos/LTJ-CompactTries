@@ -10,8 +10,12 @@
 #include <algorithm>
 #include "regular_trie.hpp"
 #include "index.hpp"
+#include "iterator.hpp"
+#include "compact_trie_iterator.hpp"
+#include <sdsl/vectors.hpp>
 
 using namespace std;
+using namespace sdsl;
 
 class TableIndexer{
     private:

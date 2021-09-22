@@ -33,6 +33,7 @@ include_directories(
 
 # add the executable
 add_executable(main src/main.cpp)
+add_executable(build_index src/build_index.cpp)
 
 # 3rd party libs
 add_subdirectory(./libs/sdsl-lite)
