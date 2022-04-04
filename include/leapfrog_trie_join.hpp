@@ -25,7 +25,7 @@ class LeapfrogJoin{
         uint32_t k;
         uint32_t key;
         uint32_t dim;
-        bool debug=false;
+        bool debug=true;
         
         LeapfrogJoin(vector<Iterator*> its, uint32_t d, string &var){
             this->iterators = its;
@@ -273,7 +273,7 @@ class LTJ{
     public:
     // private:
         //BORRAR
-        bool debug = false;
+        bool debug = true;
         //HASTA AQUI
         vector<Iterator*> iterators;
         vector<Index*> *indexes;
@@ -290,7 +290,7 @@ class LTJ{
         uint32_t limit;
 
         // Cosas para triejoin_tentativo
-        bool show_results=false;
+        bool show_results=true;
         map<string, int> gao_map;
 
         void clear(){
