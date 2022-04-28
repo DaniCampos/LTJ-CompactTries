@@ -25,7 +25,7 @@ class LeapfrogJoin{
         uint32_t k;
         uint32_t key;
         uint32_t dim;
-        bool debug=true;
+        bool debug=false;
         
         LeapfrogJoin(vector<Iterator*> its, uint32_t d, string &var){
             this->iterators = its;
@@ -47,7 +47,9 @@ class LeapfrogJoin{
             Return module a%b, supports negative numbers
         */
         uint32_t modulo(int a, uint32_t b){
-            return (b + (a%b)) % b;
+            if(a < 0){return b-1;}
+            else{return a%b;}
+            // return (b + (a%b)) % b;
         }
 
         void traverse(){
@@ -101,7 +103,7 @@ class LeapfrogJoin{
         uint32_t get_key(){
             return key;
         }
-        
+
         /*
             Prepares the iterators and finds first result
         */
@@ -110,8 +112,25 @@ class LeapfrogJoin{
                 if(it->atEnd()) at_end = true;
             }
             if(!at_end){
-                sort(iterators.begin(), iterators.end());
-                
+                at_end = false;
+                if(debug){
+                    cout<<"Order pre-sort de leapfrog_init:"<<endl;
+                    for(auto it: iterators){
+                        cout<<it->key()<<" ";
+                    }
+                    cout<<endl;
+                }
+                sort(iterators.begin(), iterators.end(),[] (Iterator* it1, Iterator* it2){
+                    return it1->key() < it2->key();
+                } );
+                if(debug){
+                    cout<<"Order post-sort de leapfrog_init:"<<endl;
+                    for(auto it: iterators){
+                        cout<<it->key()<<" ";
+                    }
+                    cout<<endl;
+                }
+                p=0;
             }   
         }
 
@@ -120,9 +139,11 @@ class LeapfrogJoin{
             // for(auto it: iterators){
             //     cout<<it->get_depth()<<endl;
             // }
-            // leapfrog_init();
+            leapfrog_init();
             //TODO: averiguar si ese int(p) puede causar problemas con número más grandes, hasta donde debería llegar?
             if(debug){cout<<"Entrando a leapfrog_search"<<endl;}
+            if(debug){cout<<"El valor de k es: "<<k<<endl;}
+            if(debug){cout<<"obteniendo xp de iterador en la pos: "<<modulo(int(p)-1,k)<<endl;}
             // cout<<"p: "<<p<<endl;
             xp = iterators[modulo(int(p)-1,k)]->key();
             // cout<<"xp: "<<xp<<endl;
@@ -262,9 +283,13 @@ class LeapfrogJoin{
                     if(debug){cout<<"el depth "<<it->get_depth()<<" "<<goal_depths[index_tuple]<<endl;}
                     it->up();
                 }
-                if(debug){cout<<"la tupla "<<index_tuple<<" subio al nivel "<<it->get_depth();}
+                if(debug){cout<<"la tupla "<<index_tuple<<" subio al nivel "<<it->get_depth()<<endl;}
                 // cout<<"la tupla "<<index_tuple<<" subio al nivel "<<it->get_depth()<<endl;
             }
+        }
+
+        uint32_t iteratorCount(){
+            return iterators.size();
         }
 };
 
@@ -273,7 +298,7 @@ class LTJ{
     public:
     // private:
         //BORRAR
-        bool debug = true;
+        bool debug = false;
         //HASTA AQUI
         vector<Iterator*> iterators;
         vector<Index*> *indexes;
@@ -290,7 +315,7 @@ class LTJ{
         uint32_t limit;
 
         // Cosas para triejoin_tentativo
-        bool show_results=true;
+        bool show_results=false;
         map<string, int> gao_map;
 
         void clear(){
@@ -338,7 +363,7 @@ class LTJ{
                 variable_lj_mapping[var] = LeapfrogJoin(iter, dim, var);
                 // variable_lj_mapping.insert(make_pair(var, LeapfrogJoin(iter, dim, var)));
                 // variable_lj_mapping[var] = new LeapfrogJoin(iter, dim, var);
-                variable_lj_mapping[var].leapfrog_init();
+                // variable_lj_mapping[var].leapfrog_init();
             }
         }
 
@@ -613,7 +638,7 @@ class LTJ{
             if(debug)cout<<"se hace next para "<<gao->at(gao_score)<<endl;
             lj->leapfrog_next();
             if(lj->is_at_end()){
-                if(debug){cout<<"el iterador esta at en en goUpUntil"<<endl;}
+                if(debug){cout<<"el iterador esta at end en goUpUntil"<<endl;}
                 if(gao_score==0){
                     if(debug){cout<<"Cant go up"<<endl;}
                     return true;
@@ -710,7 +735,20 @@ class LTJ{
                 if(debug){cout<<"buscando para var "<<var<<endl;}
                 LeapfrogJoin* lj = &variable_lj_mapping[var];
                 if(debug){cout<<"Se encontró LJ para "<<var<<endl;}
+                if(debug){cout<<"Iteradores LJ: "<<lj->iteratorCount()<<endl;}
+                if(debug){
+                    cout<<"Iterators positions and keys:"<<endl;
+                    for(auto it: iterators){
+                        cout<<"depth: "<<it->get_depth()<<"/ key: "<<it->key()<<endl;
+                    }
+                }
                 lj->leapfrog_search();
+                if(debug){
+                    cout<<"POST-SEARCH: Iterators positions and keys:"<<endl;
+                    for(auto it: iterators){
+                        cout<<"depth: "<<it->get_depth()<<"/ key: "<<it->key()<<endl;
+                    }
+                }
                 if(debug){cout<<"Se hizo search"<<endl;}
                 int current_level = gao_index;
                 while(current_level == gao_index){

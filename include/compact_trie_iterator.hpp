@@ -56,7 +56,7 @@ class CompactTrieIterator: public Iterator{
         /*
             Returns the key of the current position of the iterator
         */
-        uint32_t key(){
+        uint32_t key() const {
             if(at_end){
                 throw "Iterator is atEnd";
             }
@@ -64,11 +64,12 @@ class CompactTrieIterator: public Iterator{
                 throw "Root doesnt have key";
             }
             else{
-                if(key_flag){
-                    key_flag = false;
-                    return key_val;
-                }
-                else return compactTrie->key_at(it);
+                // if(key_flag){
+                //     key_flag = false;
+                //     return key_val;
+                // }
+                /*else*/
+                return compactTrie->key_at(it);
             }
         }
 

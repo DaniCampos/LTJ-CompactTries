@@ -15,7 +15,7 @@ class Iterator{
         // Iterator(CompactTrie* ct){};
         virtual ~Iterator(){};
         virtual bool atEnd() = 0;
-        virtual uint32_t key() = 0;
+        virtual uint32_t key() const = 0;
         virtual void seek(uint32_t seekKey) = 0;
         virtual void next() = 0;
         virtual void open() = 0;
@@ -24,9 +24,9 @@ class Iterator{
         // virtual void storeToFile(string file_name) = 0;
         // virtual void loadFromFile(string file_name) = 0;
         virtual void backToStart() = 0;
-        bool operator < (Iterator& it) {
-            return (key() < it.key());
-        }
+        // bool operator < (const Iterator& it) const {
+        //     return (key() < it.key());
+        // }
         //Temporal
         virtual void getIteratorPos() = 0;
         virtual TrieInterface* getCompactTrie() = 0;
